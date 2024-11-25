@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Tuto3</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'Blog')</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-    <header>
-        <h1>My site</h1>
-        <nav>
-        </nav>
-    </header>
-    @yield('content')
-    <footer>
-        &copy; All rights reserved.
-    </footer>
+    <div class="container">
+        @yield('content')
+    </div>
 </body>
 </html>

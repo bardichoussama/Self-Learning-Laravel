@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Tag;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/test-comments', function () {
 
@@ -32,9 +34,9 @@ Route::get('/user-comments/{userId}', function ($userId) {
     return response()->json($comments);
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
 
 Auth::routes();
 

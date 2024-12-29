@@ -4,19 +4,18 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+            @foreach ($articles as $article )
+            <div
+            class="block rounded-lg border bg-white p-6 text-surface shadow-secondary-1 mx-32  ">
+            <h5 class="mb-2 text-xl font-medium leading-tight">{{ $article->title}}</h5>
+            <p class="mb-4 text-base">
+             {{ $article->content}}
+            </p>
+            
+          </div>
+                
+            @endforeach
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
         </div>
     </div>
 </div>

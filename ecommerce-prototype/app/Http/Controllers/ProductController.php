@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Repositories\ProductRepository;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -14,51 +14,49 @@ class ProductController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    // Show the main view
-    public function index()
-
+    public function publicIndex()
     {
         $products = $this->productRepository->getAllProducts();
-        return view('products.index' ,compact('products'));
+        return view('public.products.index', compact('products'));
     }
 
-    // Get all products (AJAX endpoint)
-    // public function getProducts()
-    // {
-    //     $products = $this->productRepository->getAllProducts();
-    //     return response()->json($products);
-    // }
+    public function adminIndex()
+    {
+        $products = $this->productRepository->getAllProducts();
+        return view('admin.products.index', compact('products'));
+    }
 
-    // Add a new product (AJAX endpoint)
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
-            'stock' => 'required|integer',
         ]);
-    
-        $product = Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'stock' => $request->stock,
+
+        $this->productRepository->createProduct($request->all());
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Product added successfully.',
         ]);
-    
-        return response()->json($product);
     }
 
-    // Delete a product (AJAX endpoint)
     public function destroy($id)
     {
-        $product = $this->productRepository->find($id);
+        $deleted = $this->productRepository->delete($id);
 
-        if ($product) {
-            $product->delete();  // Delete the product
-            return response()->json(['success' => true], 200);  // Return success
+        if ($deleted) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'Product deleted successfully.',
+            ]);
         }
 
-        return response()->json(['success' => false], 404);  // Return error if not found
+        return response()->json([
+            'status' => 404,
+            'message' => 'Product not found.',
+        ]);
     }
 }
+

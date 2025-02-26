@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ProductRepository;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreProductRequest;
+use App\Repositories\ProductRepository;
 
 class ProductController extends Controller
 {
@@ -19,26 +21,14 @@ class ProductController extends Controller
         return $this->productRepository->getAllProducts();
     }
 
-    // public function adminIndex()
-    // {
-    //     $products = $this->productRepository->getAllProducts();
-    //     return view('admin.products.index', compact('products'));
-    // }
-
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-        ]);
-    
-        $product = $this->productRepository->createProduct($request->all());
+        $product = $this->productRepository->createProduct($request->validated());
     
         return response()->json([
             'status' => 200,
             'message' => 'Product added successfully.',
-            'product' => $product, 
+            'product' => $product,
         ]);
     }
     
@@ -59,4 +49,3 @@ class ProductController extends Controller
         ]);
     }
 }
-
